@@ -48,7 +48,7 @@ export const Search = styled.ul`
 `;
 export const Content = styled.div`
   grid-area: content;
-  background-color: blue;
+  background-color: ${({ theme }) => theme.COLORS.BACKGROUND_800};
   padding: 0 64px;
   overflow-y: auto;
 `;
