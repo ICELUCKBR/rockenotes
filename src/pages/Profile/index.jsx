@@ -14,7 +14,6 @@ import { api } from "../../services/api";
 import { Button } from "../../components/Button";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/auth";
-
 export function Profile() {
   const { user, updateProfile } = useAuth();
   const [name, setName] = useState(user.name);
@@ -37,14 +36,16 @@ export function Profile() {
 
   async function handleUpdate() {
     console.log("passou aqui");
-    const user = {
+    const updated = {
       name,
       email,
       password: passwordNew,
       old_password: passwordOld,
     };
 
-    await updateProfile({ user, avatarFile });
+    const userUpdated = Object.assign(user,updated)
+
+    await updateProfile({ user:userUpdated, avatarFile });
   }
 
   return (

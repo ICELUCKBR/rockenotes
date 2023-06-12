@@ -7,6 +7,7 @@ import { Section } from "../../components/Section";
 import { Note } from "../../components/Note";
 import { useState, useEffect } from "react";
 import { api } from "../../services/api";
+import { useNavigate } from "react-router-dom";
 
 export function Home() {
   const [tags, setTags] = useState([]);
@@ -14,7 +15,12 @@ export function Home() {
   const [tagsSelected, setTagsSelected] = useState([]);
   const [search, setSearch] = useState("");
 
+  const navigate = useNavigate();
+
   function handleTagSelected(tagName) {
+    if (tagName == "all") {
+      return setTagsSelected([]);
+    }
     const alreadySelected = tagsSelected.includes(tagName);
     if (alreadySelected) {
       const filteredTags = tagsSelected.filter((tag) => tag !== tagName);
@@ -22,6 +28,10 @@ export function Home() {
     } else {
       setTagsSelected((prevState) => [...prevState, tagName]);
     }
+  }
+
+  function handleDetails(id) {
+    navigate(`/details/${id}`);
   }
 
   useEffect(() => {
@@ -36,14 +46,14 @@ export function Home() {
   useEffect(() => {
     async function fetchNotes() {
       const response = await api.get(
-        `/notes?title=${search}&tags=${tagsSelected}`);
-        console.log([search,tagsSelected])
-        
-        setNotes(response.data);
+        `/notes?title=${search}&tags=${tagsSelected}`
+      );
+      console.log([search, tagsSelected]);
 
+      setNotes(response.data);
     }
     fetchNotes();
-  }, [search,tagsSelected]);
+  }, [search, tagsSelected]);
 
   return (
     <Container>
@@ -82,9 +92,13 @@ export function Home() {
 
       <Content>
         <Section title="Minhas notas">
-          {notes.map((note) => {
-            <Note key={String(note.id)} data={note}></Note>;
-          })}
+          {notes.map((note) => (
+            <Note
+              key={String(note.id)}
+              data={note}
+              onClick={()=>handleDetails(note.id)}
+            ></Note>
+          ))}
         </Section>
       </Content>
 

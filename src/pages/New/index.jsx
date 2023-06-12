@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Input } from "../../components/Input";
 import { Header } from "../../components/Header";
 import { Button } from "../../components/Button";
+import { ButtonText } from "../../components/ButtonText";
 import { Section } from "../../components/Section";
 import { Textarea } from "../../components/Textarea";
 import { NoteItem } from "../../components/NoteItem";
@@ -26,6 +27,10 @@ export function New() {
   function handleAddLink() {
     setLinks((prevState) => [...prevState, newLink]); // Create new array, using the REST(...) for load and Add one link in the Array
     setNewLink(""); //Reset the State
+  }
+
+  function handleBack(){
+    navigate(-1)
   }
 
   function handleRemoveLink(deleted) {
@@ -67,7 +72,7 @@ export function New() {
     });
 
     alert("Nota adicionada");
-    navigate("/");
+    navigate(-1);
   }
   return (
     <Container>
@@ -76,7 +81,8 @@ export function New() {
         <Form>
           <header>
             <h1>Criar nota</h1>
-            <Link to="/">voltar</Link>
+      
+            <ButtonText title="voltar" onClick={handleBack}/>
           </header>
 
           <Input
